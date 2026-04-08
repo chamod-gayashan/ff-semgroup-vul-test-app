@@ -50,6 +50,9 @@ public class UserController {
     public ResponseEntity<?> exportFile(HttpServletRequest request) {
         try {
             String filename = request.getParameter("filename");
+            if (filename == null || !filename.matches("^[a-zA-Z0-9_\\-]+\\.[a-zA-Z0-9]+$")) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Invalid filename"));
+            }
             File file = new File("/var/data/exports/" + filename);
             FileInputStream fis = new FileInputStream(file);
             byte[] data = fis.readAllBytes();
