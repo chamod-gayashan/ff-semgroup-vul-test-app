@@ -36,9 +36,10 @@ public class TransactionController {
             return ResponseEntity.ok(transactionRepository.findAll());
         }
         try {
-            String jpql = "FROM Transaction t WHERE t.ownerName = '" + user + "'";
+            String jpql = "FROM Transaction t WHERE t.ownerName = :username";
             List<Transaction> results = entityManager
                     .createQuery(jpql, Transaction.class)
+                    .setParameter("username", user)
                     .getResultList();
             return ResponseEntity.ok(results);
         } catch (Exception e) {
